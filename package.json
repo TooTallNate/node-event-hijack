@@ -1,0 +1,20 @@
+{
+  "name": "event-hijack",
+  "version": "0.0.0",
+  "description": "Hijacks the specified EventEmitter event",
+  "main": "hijack.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/TooTallNate/node-event-hijack.git"
+  },
+  "keywords": [
+    "event",
+    "EventEmitter",
+    "hijack"
+  ],
+  "author": "Nathan Rajlich <nathan@tootallnate.net> (http://tootallnate.net)",
+  "license": "MIT"
+}
