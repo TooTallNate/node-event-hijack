@@ -41,20 +41,24 @@ function hijack (emitter, name, fn) {
 
   // define a getter/setter for the `on%name%` handler property.
   // this is used as a shortcut event handler in some parts of node-core.
+  var prop = prefix + 'on' + name;
   function get () {
-    return this[prefix + 'on' + name];
+    return undefined;
   }
   function set (v) {
-    var old = this[prefix + 'on' + name];
-    if (old) this.removeListener(name, old.listener);
+    var old = this[prop];
+    if (old) {
+      this.removeListener(name, old.listener);
+      this[prop] = null;
+    }
     if (v) {
       v.listener = function (buf) {
-        if (Buffer.isBuffer(buf)) v(buf, 0, buf.length); // assume "data" listener
+        if (Buffer.isBuffer(buf)) v.call(this, buf, 0, buf.length); // assume "data" listener
         else v.apply(this, arguments);
       };
       this.on(name, v.listener);
     }
-    return this[prefix + 'on' + name] = v;
+    return this[prop] = v;
   }
   Object.defineProperty(emitter, 'on' + name, {
     get: get,
