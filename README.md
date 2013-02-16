@@ -20,7 +20,7 @@ Example
 var hijack = require('event-hijack');
 var EventEmitter = require('events').EventEmitter;
 
-// our test subjet "emitter" instance
+// our test subject "emitter" instance
 var emitter = new EventEmitter();
 
 // you can use the emitter normally
