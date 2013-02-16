@@ -1,6 +1,6 @@
 {
   "name": "event-hijack",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Hijacks the specified EventEmitter event",
   "main": "hijack.js",
   "scripts": {
