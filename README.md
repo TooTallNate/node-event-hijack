@@ -1,6 +1,7 @@
 node-event-hijack
 =================
 ### Hijacks the specified EventEmitter event
+[![Build Status](https://travis-ci.org/TooTallNate/node-event-hijack.png?branch=master)](https://travis-ci.org/TooTallNate/node-event-hijack)
 
 Hijacks the specified EventEmitter event name.
 
