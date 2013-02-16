@@ -62,7 +62,7 @@ function hijack (emitter, name, fn) {
         if (Buffer.isBuffer(buf)) v.call(this, buf, 0, buf.length); // assume "data" listener
         else v.apply(this, arguments);
       };
-      this.on(name, v.listener);
+      this.on(ev, v.listener);
     }
     return this[prop] = v;
   }
