@@ -3,6 +3,7 @@
  * Module dependencies.
  */
 
+var debug = require('debug')('event-hijack');
 var slice = Array.prototype.slice;
 var prefix = '_hijack_';
 
@@ -29,6 +30,9 @@ module.exports = hijack;
  */
 
 function hijack (emitter, name, fn) {
+  debug('hijacking event %j on emitter', name);
+
+  // monkey-patch the event emitter functions
   setup(emitter);
 
   // add event listener before hijacking
@@ -43,9 +47,11 @@ function hijack (emitter, name, fn) {
   // this is used as a shortcut event handler in some parts of node-core.
   var prop = prefix + 'on' + name;
   function get () {
-    return undefined;
+    debug('get(): %s - returning `undefined`', 'on' + name);
+    return void(0);
   }
   function set (v) {
+    debug('set(): %s %s', 'on' + name, v == null ? 'null' : typeof v);
     var old = this[prop];
     if (old) {
       this.removeListener(name, old.listener);
@@ -70,6 +76,7 @@ function hijack (emitter, name, fn) {
   // the returned function is how you invoke the "hijacked" event listeners
   var ev = prefix + name;
   return function emit () {
+    debug('emitting hijacked %j event (%j)', name, ev);
     var args = slice.call(arguments);
     args.unshift(ev);
     return emitter.emit.apply(emitter, args);
@@ -84,6 +91,7 @@ function hijack (emitter, name, fn) {
 
 function setup (emitter) {
   if (emitter._hijacked) return;
+  debug('setup()');
 
   // map of names of events that have been hijacked
   emitter._hijackedEvents = {};
@@ -114,6 +122,7 @@ function setup (emitter) {
 
 function on (name, fn) {
   if (this._hijackedEvents[name]) {
+    debug('on: renaming %j event to %j', name, prefix + name);
     name = prefix + name;
   }
   return this._hijackRealAddListener(name, fn);
@@ -121,6 +130,7 @@ function on (name, fn) {
 
 function once (name, fn) {
   if (this._hijackedEvents[name]) {
+    debug('once: renaming %j event to %j', name, prefix + name);
     name = prefix + name;
   }
   return this._hijackRealOnce(name, fn);
@@ -128,6 +138,7 @@ function once (name, fn) {
 
 function removeListener (name, fn) {
   if (this._hijackedEvents[name]) {
+    debug('removeListener: renaming %j event to %j', name, prefix + name);
     name = prefix + name;
   }
   return this._hijackRealRemoveListener(name, fn);

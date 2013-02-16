@@ -16,5 +16,8 @@
     "hijack"
   ],
   "author": "Nathan Rajlich <nathan@tootallnate.net> (http://tootallnate.net)",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "debug": "0"
+  }
 }
